@@ -99,7 +99,7 @@ else:
 # ---------------------------------------------------------------------------- #
 # Timestep the overlay is published in!
 # --> must be longer than the processing time of the computer
-overlay_publish_timestep = 1 # Seconds
+overlay_publish_timestep = 0.5 # Seconds
 
 # Quality of overlay image
 dpi = 250 # Pixels per inch
@@ -116,12 +116,29 @@ pcd_dis_min = 1 # Meters
 
 # Slider parameters
 # Max / min slider value
-max_trans = 0.5 # meters
-min_trans = -0.5 # meters
+max_trans = 20 # meters
+min_trans = -20 # meters
 max_deg = 10 # degrees
 min_deg = -10 # degrees
 
 resolution_trans = 0.001 # Defines the steprange of the translation sliders in meters
 resolution_rot = 0.01 # Defines the steprange of the rotation slider in degrees
 
-width_slider = 800 # Defines the width of the GUI window in pixels
+width_slider = 1500 # Defines the width of the GUI window in pixels
+
+# ---------------------------------------------------------------------------- #
+#                            Chris adds more params                            #
+# ---------------------------------------------------------------------------- #
+
+# ---------------------------------- Z_scale --------------------------------- #
+usr_z_scale = 0
+max_z_scale = 3 
+min_z_scale = -0.9
+resolution_z_scale = 0.01
+# ------------------------------------ cx ------------------------------------ #
+max_px = 500 # pixels
+min_px = -500 # pixels
+resolution_px = 1.0
+usr_cx_scale = 0
+usr_cy_scale = 0
+# ------------------------------------ cy ------------------------------------ #

@@ -14,7 +14,7 @@ import open3d as o3d
 import numpy as np
 # Own files
 import params 
-from pcd_image_overlay import create_point_cloud_image_overlay
+from pcd_image_overlay_Chris import create_point_cloud_image_overlay
 import pointcloud2_to_pcd_file  
 
 # ---------------------------------------------------------------------------- #
@@ -80,7 +80,7 @@ class Img_PCD_Subscriber_Overlay_Publisher(Node):
             Img_PCD_Subscriber_Overlay_Publisher.glob_cv_image_front  = self.bridge.imgmsg_to_cv2(Image)
         except CvBridgeError as e:
             print(e)
-        print("Subscribed to image.") 
+        # print("Subscribed to image.") 
 
     # --------------- Pointcloud2 file subscriber callback function -------------- #
     def sub_callback_pcd(self, PointCloud2 ):
@@ -100,21 +100,32 @@ class Img_PCD_Subscriber_Overlay_Publisher(Node):
         # ---------------------------------------------------------------------------- #
 
 
-        print("Subscribed to pcd.")
+        # print("Subscribed to pcd.")
+
 
     # -------------------- Overlay publisher callback function (Timer Invoked) ------------------- #
     def pub_callback(self):
         cv_image_point_cloud_overlay = None # Clear the buffer
+        # print("Img_PCD_Subscriber_Overlay_Publisher.glob_pcd_file==None:, ", Img_PCD_Subscriber_Overlay_Publisher.glob_pcd_file==None)
+        # print(np.any(np.array([Img_PCD_Subscriber_Overlay_Publisher.glob_pcd_file==None, Img_PCD_Subscriber_Overlay_Publisher.glob_pcd_file2 == None, Img_PCD_Subscriber_Overlay_Publisher.glob_cv_image_front == None])))
+        # ------------------------------ Check if Empty ------------------------------ #
+        if (np.any([np.any(Img_PCD_Subscriber_Overlay_Publisher.glob_pcd_file2 == None), \
+                    np.any(Img_PCD_Subscriber_Overlay_Publisher.glob_cv_image_front == None)])):
+            print("Some Inputs are Empty")
+            return
 
-        # Overlay image and pointcloud
-        cv_image_point_cloud_overlay = create_point_cloud_image_overlay\
-            (Img_PCD_Subscriber_Overlay_Publisher.glob_pcd_file, Img_PCD_Subscriber_Overlay_Publisher.glob_pcd_file2, Img_PCD_Subscriber_Overlay_Publisher.glob_cv_image_front)
+        # ---------------------------------------------------------------------------- #
+        #                         Overlay image and pointcloud                         #
+        # ---------------------------------------------------------------------------- #
+        ros_image_point_cloud_overlay = create_point_cloud_image_overlay\
+            (Img_PCD_Subscriber_Overlay_Publisher.glob_pcd_file2, Img_PCD_Subscriber_Overlay_Publisher.glob_cv_image_front)
         
         # Convert overlay to ros msg image format (using cv_bridge)
         try:
-            ros_image_point_cloud_overlay = self.bridge.cv2_to_imgmsg(cv_image_point_cloud_overlay, "rgb8")
+            ros_image_point_cloud_overlay = self.bridge.cv2_to_imgmsg(ros_image_point_cloud_overlay)
         except CvBridgeError as e:
             print(e) 
+            return
         
 
         ros_image_point_cloud_overlay.header.frame_id = "camera_front_point_cloud_overlay"

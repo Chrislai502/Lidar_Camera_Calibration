@@ -5,6 +5,24 @@ import transformations
 # Creates the GUI
 def create_slider():
     # Nested function to write slider values to params file
+    def show_overlay_trans_x(value):
+        params.usr_translation = (float(value), w2.get(), w3.get())
+    def show_overlay_trans_y(value):
+        params.usr_translation = (w1.get(), float(value), w3.get())
+    def show_overlay_trans_z(value):
+        params.usr_translation = (w1.get(), w2.get(), float(value))
+    def show_overlay_rot_x(value):
+        params.usr_rotation = (float(value), w5.get(), w6.get())
+    def show_overlay_rot_y(value):
+        params.usr_rotation = (w4.get(), float(value), w6.get())
+    def show_overlay_rot_z(value):
+        params.usr_rotation = (w4.get(), w5.get(), float(value))
+    def show_overlay_cx(value):
+        params.usr_cx_scale = int(value)
+    def show_overlay_cy(value):
+        params.usr_cy_scale = int(value)
+    
+
     def show_overlay():
         params.usr_translation = (w1.get(), w2.get(), w3.get())
         params.usr_rotation = (w4.get(), w5.get(), w6.get())
@@ -56,29 +74,42 @@ def create_slider():
     master.title("Calibration Tool")
 
     w1 = tk.Scale(master, label = "Translation along x-axis (meters):", from_ = params.min_trans, to = params.max_trans, \
-        length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_trans)
+        length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_trans, command=show_overlay_trans_x)
     w1.set(params.usr_translation[0])
     w1.pack()
     w2 = tk.Scale(master, label = "Translation along y-axis (meters):", from_ = params.min_trans, to = params.max_trans, \
-        length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_trans)
+        length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_trans, command=show_overlay_trans_y)
     w2.set(params.usr_translation[1])
     w2.pack()
     w3 = tk.Scale(master, label = "Translation along z-axis (meters):", from_ = params.min_trans, to = params.max_trans, \
-        length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_trans )
+        length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_trans, command=show_overlay_trans_z)
     w3.set(params.usr_translation[2])
     w3.pack()
     w4 = tk.Scale(master, label = "Rotation around x-axis (degrees) (Rotation order: z, y', x''):", \
-        from_ = params.min_deg, to = params.max_deg, length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot)
+        from_ = params.min_deg, to = params.max_deg, length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot, command=show_overlay_rot_x)
     w4.set(params.usr_rotation[0])
     w4.pack()
     w5 = tk.Scale(master, label = "Rotation around y-axis (degrees):", from_ = params.min_deg, to = params.max_deg, \
-        length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot)
+        length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot, command=show_overlay_rot_y)
     w5.set(params.usr_rotation[1])
     w5.pack()
     w6 = tk.Scale(master, label = "Rotation around z-axis (degrees):", from_ = params.min_deg, to = params.max_deg, \
-        length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot)
+        length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot, command=show_overlay_rot_z)
     w6.set(params.usr_rotation[2])
     w6.pack()
+
+    # ---------------------------------------------------------------------------- #
+    #                          Chris Additional Parameters                         #
+    # ---------------------------------------------------------------------------- #
+    w7 = tk.Scale(master, label = "Scaling on cx:", from_ = params.min_px, to = params.max_px, \
+    length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_px, command=show_overlay_cx)
+    w7.set(params.usr_cx_scale)
+    w7.pack()
+
+    w8 = tk.Scale(master, label = "Scaling on cy:", from_ = params.min_px, to = params.max_px, \
+    length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_px, command=show_overlay_cy)
+    w8.set(params.usr_cy_scale)
+    w8.pack()
 
     # Definition of buttons
     tk.Button(master, text = '          Show Overlay          ', command = show_overlay).pack()
