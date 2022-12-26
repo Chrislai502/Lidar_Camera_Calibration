@@ -21,6 +21,8 @@ def create_slider():
         params.usr_cx_scale = int(value)
     def show_overlay_cy(value):
         params.usr_cy_scale = int(value)
+    def show_overlay_fx(value):
+        params.fx = value
     
 
     def show_overlay():
@@ -85,14 +87,17 @@ def create_slider():
         length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_trans, command=show_overlay_trans_z)
     w3.set(params.usr_translation[2])
     w3.pack()
+
     w4 = tk.Scale(master, label = "Rotation around x-axis (degrees) (Rotation order: z, y', x''):", \
         from_ = params.min_deg, to = params.max_deg, length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot, command=show_overlay_rot_x)
     w4.set(params.usr_rotation[0])
     w4.pack()
+
     w5 = tk.Scale(master, label = "Rotation around y-axis (degrees):", from_ = params.min_deg, to = params.max_deg, \
         length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot, command=show_overlay_rot_y)
     w5.set(params.usr_rotation[1])
     w5.pack()
+    
     w6 = tk.Scale(master, label = "Rotation around z-axis (degrees):", from_ = params.min_deg, to = params.max_deg, \
         length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot, command=show_overlay_rot_z)
     w6.set(params.usr_rotation[2])
@@ -110,6 +115,11 @@ def create_slider():
     length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_px, command=show_overlay_cy)
     w8.set(params.usr_cy_scale)
     w8.pack()
+
+    w9 = tk.Scale(master, label = "Scaling on Fx:", from_ = params.minx, to = params.maxx, \
+    length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot, command=show_overlay_fx)
+    w9.set(params.fx)
+    w9.pack()
 
     # Definition of buttons
     tk.Button(master, text = '          Show Overlay          ', command = show_overlay).pack()

@@ -40,6 +40,7 @@ elif sim_data == "no": # If the real camera and LiDAR data is used the initial t
     # translation = (-0.71224, 0, 0.06637) # according to TUM wiki
     translation = (0.121, -0.026, 0.007) # Chirs Changed this
     rotation = (90,-90,0) # The order the rotation is done is z,y',x'' (In degrees)(use this website to figure out what it is using Euler angles https://www.andre-gaschler.com/rotationconverter/)
+    # rotation = (0,0,0) # The order the rotation is done is z,y',x'' (In degrees)(use this website to figure out what it is using Euler angles https://www.andre-gaschler.com/rotationconverter/)
 
 # Default user input transformation / rotation --> don't change
 usr_translation = (0,0,0) 
@@ -99,7 +100,7 @@ else:
 # ---------------------------------------------------------------------------- #
 # Timestep the overlay is published in!
 # --> must be longer than the processing time of the computer
-overlay_publish_timestep = 0.5 # Seconds
+overlay_publish_timestep = 0.2 # Seconds
 
 # Quality of overlay image
 dpi = 250 # Pixels per inch
@@ -118,8 +119,8 @@ pcd_dis_min = 1 # Meters
 # Max / min slider value
 max_trans = 20 # meters
 min_trans = -20 # meters
-max_deg = 10 # degrees
-min_deg = -10 # degrees
+max_deg = 40 # degrees
+min_deg = -40 # degrees
 
 resolution_trans = 0.001 # Defines the steprange of the translation sliders in meters
 resolution_rot = 0.01 # Defines the steprange of the rotation slider in degrees
@@ -136,9 +137,12 @@ max_z_scale = 3
 min_z_scale = -0.9
 resolution_z_scale = 0.01
 # ------------------------------------ cx ------------------------------------ #
-max_px = 500 # pixels
-min_px = -500 # pixels
+max_px = 1500 # pixels
+min_px = -1500 # pixels
 resolution_px = 1.0
 usr_cx_scale = 0
 usr_cy_scale = 0
+maxx=2
+minx=0.1
+fx=1
 # ------------------------------------ cy ------------------------------------ #

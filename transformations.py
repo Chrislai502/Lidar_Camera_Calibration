@@ -28,11 +28,14 @@ def matrix(rotation=(0,0,0), translation=(0,0,0)):
 #                       Returns the rotation matrix                      #
 # ---------------------------------------------------------------------------- #
 def deg2RotMat(rotation=(0,0,0)): 
+  print('rotation: ', rotation)
   xC, xS = trig(rotation[0])
   yC, yS = trig(rotation[1])
   zC, zS = trig(rotation[2])
 
-  return [[zC*yC, zC*yS*xS-zS*xC, zC*yS*xC+zS*xS], [zS*yC, zS*yS*xS+zC*xC, zS*yS*xC-zC*xS],[-yS  , yC*xS         , yC*xC         ]]
+  return [[zC*yC, zC*yS*xS-zS*xC, zC*yS*xC+zS*xS], 
+            [zS*yC, zS*yS*xS+zC*xC, zS*yS*xC-zC*xS],
+            [-yS  , yC*xS         , yC*xC         ]]
 
 # ---------------------------------------------------------------------------- #
 #                           Applying transformations                           #
