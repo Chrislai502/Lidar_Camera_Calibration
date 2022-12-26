@@ -117,10 +117,10 @@ pcd_dis_min = 1 # Meters
 
 # Slider parameters
 # Max / min slider value
-max_trans = 20 # meters
-min_trans = -20 # meters
-max_deg = 40 # degrees
-min_deg = -40 # degrees
+max_trans = 1 # meters
+min_trans = -1 # meters
+max_deg = 2 # degrees
+min_deg = -2 # degrees
 
 resolution_trans = 0.001 # Defines the steprange of the translation sliders in meters
 resolution_rot = 0.01 # Defines the steprange of the rotation slider in degrees
