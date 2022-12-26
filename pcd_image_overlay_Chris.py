@@ -36,44 +36,41 @@ def create_point_cloud_image_overlay(pcd_points2 , cam_image):
     # ---------------------------------------------------------------------------- # Alt + shift + x
     #                                      sdf                                     #
     # ---------------------------------------------------------------------------- #
-    translation_luminar_front2_flc = np.array([(params.translation[0]-1.302+1.354-0.3),
-                                                (params.translation[1]-1.25+1.250-0.054), 
-                                                (params.translation[2]+13.33-9.167+4.905)])
-    RotMat_luminar_front2_flc = np.array([(params.rotation[0]+6.77), 
-                                            (params.rotation[1]+1.61), 
-                                            (params.rotation[2]-5.93)])
-    translation_luminar_front2_flc2 = np.array([(params.usr_translation[0]),
-                                                (params.usr_translation[1]), 
-                                                (params.usr_translation[2])])
-    RotMat_luminar_front2_flc2= np.array([params.usr_rotation[0], 
-                                            params.usr_rotation[1], 
-                                            params.usr_rotation[2]])
+    translation_luminar_front2_flc = np.array([(params.translation[0]),
+                                                (params.translation[1]), 
+                                                (params.translation[2])])
+                                                
+    RotMat_luminar_front2_flc = np.array([(params.rotation[0]), 
+                                            (params.rotation[1]), 
+                                            (params.rotation[2])])
+    translation_luminar_front2_flc2 = np.array([(params.usr_translation[0]- 0.136),
+                                                (params.usr_translation[1]- 0.027), 
+                                                (params.usr_translation[2]+ 0.327)])
+    RotMat_luminar_front2_flc2= np.array([params.usr_rotation[0]- 3.49, 
+                                            params.usr_rotation[1]-0.16, 
+                                            params.usr_rotation[2]-0.54])
     RotMat_luminar_front2_flc = np.array(transformations.deg2RotMat(RotMat_luminar_front2_flc))
     RotMat_luminar_front2_flc2 = np.array(transformations.deg2RotMat(RotMat_luminar_front2_flc2))
-    # RotMat_luminar_front2_flc = np.array([[0.0, -1.0,  0.0],
-    #                                     [0.0,  0.0, -1.0],
-    #                                     [1.0,  0.0,  0.0]])
-    # translation_luminar_front2_flc = np.array([0.121, -0.026, 0.007])
+
     print(translation_luminar_front2_flc)
     print(RotMat_luminar_front2_flc)
     translation_luminar_front2_flc = np.tile(translation_luminar_front2_flc.reshape((3, 1)), numpoints)
     translation_luminar_front2_flc2 = np.tile(translation_luminar_front2_flc2.reshape((3, 1)), numpoints)
     assert(translation_luminar_front2_flc.shape == (3, numpoints)), "Translation is not 3 x N"
-    # ptc_xyz_lidar=ptc_xyz_lidar[:,[1,2,0]]
-    # ptc_xyz_lidar[:,1]*=-1
+
     ptc_xyz_camera = RotMat_luminar_front2_flc @ ptc_xyz_lidar.T+translation_luminar_front2_flc
     ptc_xyz_camera+=translation_luminar_front2_flc2
     ptc_xyz_camera = RotMat_luminar_front2_flc2 @ ptc_xyz_camera
-    # ptc_xyz_camera=ptc_xyz_camera[[1,2,0]]
-    # ptc_xyz_camera[1]*=-1
-    # ptc_xyz_camera += translation_luminar_front2_flc # This is correct
+
     ptc_xyz_camera = ptc_xyz_camera.T
     assert(ptc_xyz_camera.shape == (numpoints, 3)), "PointCloud_camera is not N x 3"
 
     # ------------------------- Applying the Camera Info ------------------------- #
-    # print(1732.571708*params.fx)
-    camera_info = np.array([[1732.571708*0.5*float(params.fx), 0.000000, 587.015164*0.5+ params.usr_cx_scale], 
-                            [0.000000, 1731.274561*0.5*float(params.fx), 357.484988*0.5+ params.usr_cy_scale], 
+    # camera_info = np.array([[1732.571708*0.5*float(params.fx), 0.000000, 587.015164*0.5+ params.usr_cx_scale], 
+    #                     [0.000000, 1731.274561*0.5*float(params.fx), 357.484988*0.5+ params.usr_cy_scale], 
+    #                     [0.000000, 0.000000, 1.000000]])
+    camera_info = np.array([[1732.571708*0.5 * float(params.fx), 0.000000, 549.797164*0.5 + params.usr_cx_scale], 
+                            [0.000000, 1731.274561*0.5 * float(params.fx), 295.484988*0.5 + params.usr_cy_scale], 
                             [0.000000, 0.000000, 1.000000]])
     ptc_xyz_camera = ptc_xyz_camera.T
     ptc_xyz_camera = camera_info @ ptc_xyz_camera
