@@ -43,12 +43,12 @@ def create_point_cloud_image_overlay(pcd_points2 , cam_image):
     RotMat_luminar_front2_flc = np.array([(params.rotation[0]), 
                                             (params.rotation[1]), 
                                             (params.rotation[2])])
-    translation_luminar_front2_flc2 = np.array([(params.usr_translation[0]- 0.163 + 0.059),
-                                                (params.usr_translation[1] +0.01), 
-                                                (params.usr_translation[2]+ 0.327-0.178)])
+    translation_luminar_front2_flc2 = np.array([(params.usr_translation[0] - 0.104),
+                                                (params.usr_translation[1] + 0.01), 
+                                                (params.usr_translation[2]+ 0.149)])
     RotMat_luminar_front2_flc2= np.array([params.usr_rotation[0]- 3.44, 
-                                            params.usr_rotation[1]+1.26-0.05, 
-                                            params.usr_rotation[2]-0.65+0.39])
+                                            params.usr_rotation[1] + 1.21, 
+                                            params.usr_rotation[2]-0.26])
     RotMat_luminar_front2_flc = np.array(transformations.deg2RotMat(RotMat_luminar_front2_flc))
     RotMat_luminar_front2_flc2 = np.array(transformations.deg2RotMat(RotMat_luminar_front2_flc2))
 
