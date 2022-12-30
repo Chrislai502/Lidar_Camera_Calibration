@@ -60,11 +60,15 @@ def create_point_cloud_image_overlay(pcd_points2 , cam_image):
     # ---------------------------------------------------------------------------- #
     #                     Writing the Calibrations into a file                     #
     # ---------------------------------------------------------------------------- #
-    with open('calibtaton.txt','wb') as f:
-        new_translation = str(translation_luminar_front2_flc_final) + '\n'
-        new_rotation = str(RotMat_luminar_front2_flc)
-        f.write(new_translation + new_rotation)
-        f.close()
+    # Save the array to a file
+    np.savetxt('Calibrated_translation.txt', translation_luminar_front2_flc_final, fmt='%.4f')
+    # Save the array to a file
+    np.savetxt('Calibrated_rotation.txt', RotMat_luminar_front2_flc, fmt='%.4f')
+    # with open('calibtaton.txt','wb') as f:
+    #     new_translation = str(translation_luminar_front2_flc_final) + '\n'
+    #     new_rotation = str(RotMat_luminar_front2_flc)
+    #     f.write(new_translation + new_rotation)
+    #     f.close()
 
 
     ptc_xyz_camera = ptc_xyz_camera.T
