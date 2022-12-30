@@ -3,8 +3,8 @@
 Chris: 
 To use this tool, 
 1) install requirements.txt (in a conda environment or not, Python version 3.8 strictly
-1.1) pip install -r requirements.txt
-2) python3 main.py
+2) pip install -r requirements.txt
+3) python3 main.py
 
 
 Using this tool you can do the calibration between a camera and a LiDAR-sensor. The tool receives the camera image and point cloud from nodes publishing them. Based on the initial calibration parameters the LiDAR points are then projected to the image and an overlay is published and can be shown in RVIZ. Using a GUI, the user can adjust the 6 DOF and thereby create the optimal overlay between LiDAR points and the image. Based on that the calibration matrix is calculated, returned to the terminal and also written to a .txt file. 
