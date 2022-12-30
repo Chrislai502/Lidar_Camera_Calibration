@@ -8,7 +8,6 @@ from mpl_toolkits.mplot3d import Axes3D
 import cv2
 import io # Needed for the buffer functionality
 from PIL import Image
-from ai import cs # Coordinate transformation package
 import copy
 import math
 # Own files
@@ -21,15 +20,9 @@ import params
 def create_point_cloud_image_overlay(pcd_points2 , cam_image):
 
     # -------------------- Lidar camera projection right here -------------------- #
-    # ptc_numpy_record = pointcloud2_to_array(self.point_cloud_msg)
-    # ptc_xyz_lidar = get_xyz_points(ptc_numpy_record)
     ptc_xyz_lidar = pcd_points2
     numpoints = ptc_xyz_lidar.shape[0]
     assert(ptc_xyz_lidar.shape[1] == 3), "PointCloud_lidar is not N x 3"
-    # np.save(os.path.join(os.getcwd(), "pointcloud_raw.txt"), ptc_numpy)
-    # np.savetxt(os.path.join(os.getcwd(), "pointcloud_raw.txt"), ptc_numpy, fmt="%d", delimiter=",")
-    # print("Min Values:", np.min(ptc_xyz_lidar, axis=0))
-    # print("Max Values: ", np.max(ptc_xyz_lidar, axis=0))
 
     # --------------------------- Applying the Rotation -------------------------- # Alt + x
     # ---------------------------------------------------------------------------- # Alt + Y
@@ -43,27 +36,36 @@ def create_point_cloud_image_overlay(pcd_points2 , cam_image):
     RotMat_luminar_front2_flc = np.array([(params.rotation[0]), 
                                             (params.rotation[1]), 
                                             (params.rotation[2])])
-    translation_luminar_front2_flc2 = np.array([(params.usr_translation[0] - 0.104),
-                                                (params.usr_translation[1] + 0.01), 
-                                                (params.usr_translation[2]+ 0.149)])
-    RotMat_luminar_front2_flc2= np.array([params.usr_rotation[0]- 3.44, 
-                                            params.usr_rotation[1] + 1.21, 
-                                            params.usr_rotation[2]-0.26])
+    translation_luminar_front2_flc2 = np.array([(params.usr_translation[0]),
+                                                (params.usr_translation[1]), 
+                                                (params.usr_translation[2])])
+    RotMat_luminar_front2_flc2= np.array([params.usr_rotation[0], 
+                                            params.usr_rotation[1], 
+                                            params.usr_rotation[2]])
     RotMat_luminar_front2_flc = np.array(transformations.deg2RotMat(RotMat_luminar_front2_flc))
     RotMat_luminar_front2_flc2 = np.array(transformations.deg2RotMat(RotMat_luminar_front2_flc2))
 
     translation_luminar_front2_flc = translation_luminar_front2_flc + translation_luminar_front2_flc2 
-    print(translation_luminar_front2_flc)
+    translation_luminar_front2_flc_final = translation_luminar_front2_flc
+    print(translation_luminar_front2_flc_final) # Final Translation
+
     translation_luminar_front2_flc = np.tile(translation_luminar_front2_flc.reshape((3, 1)), numpoints)
     translation_luminar_front2_flc = (RotMat_luminar_front2_flc2 @ translation_luminar_front2_flc)
     RotMat_luminar_front2_flc = RotMat_luminar_front2_flc2 @ RotMat_luminar_front2_flc
 
     ptc_xyz_camera = RotMat_luminar_front2_flc @ ptc_xyz_lidar.T + translation_luminar_front2_flc
-    # print(translation_luminar_front2_flc)
-    print(RotMat_luminar_front2_flc)
-    
-    # ptc_xyz_camera+=translation_luminar_front2_flc2
-    # ptc_xyz_camera = RotMat_luminar_front2_flc2 @ ptc_xyz_camera
+
+    print(RotMat_luminar_front2_flc) # Final Rotation
+
+    # ---------------------------------------------------------------------------- #
+    #                     Writing the Calibrations into a file                     #
+    # ---------------------------------------------------------------------------- #
+    with open('calibtaton.txt','wb') as f:
+        new_translation = str(translation_luminar_front2_flc_final) + '\n'
+        new_rotation = str(RotMat_luminar_front2_flc)
+        f.write(new_translation + new_rotation)
+        f.close()
+
 
     ptc_xyz_camera = ptc_xyz_camera.T
 
@@ -102,18 +104,9 @@ def create_point_cloud_image_overlay(pcd_points2 , cam_image):
         b = int(np.floor(i[1]) + border_size)
         if a>0 and b>0:
             try:
-                # image_undistorted[b][a] = c
-                # image_undistorted[b+1][a] = c
-                # image_undistorted[b][a+1] = c
-                # image_undistorted[b+1][a+1] = c
-                # image_undistorted[b-1][a] = c
-                # image_undistorted[b][a-1] = c
-                # image_undistorted[b-1][a-1] = c
-
                 image_undistorted[b-1:b+2,a-1:a+2] = c
             except:
                 continue
-        # image_undistorted = cv2.circle(image_undistorted, (int(i[0]+border_size), int(i[1])+border_size), 1, (0, 0, 255), 2)
 
     return image_undistorted
     
