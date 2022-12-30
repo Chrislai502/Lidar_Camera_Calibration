@@ -1,7 +1,7 @@
 # Tool to calibrate the 6 DOF between LiDAR and camera using ROS2 and RVIZ.
 
 Chris: 
-To use this tool, 
+To use this tool:
 Install requirements.txt (in a conda environment or not, Python version 3.8 strictly
 1) pip install -r requirements.txt
 2) python3 main.py
