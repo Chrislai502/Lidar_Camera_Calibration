@@ -1,5 +1,4 @@
 import numpy as np
-import open3d as o3d
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import matplotlib.cm as cm
@@ -13,6 +12,7 @@ import math
 # Own files
 import transformations
 import params
+from scipy.spatial.transform import Rotation as R
 
 # ---------------------------------------------------------------------------- #
 #     Create a plot and .jpg with front camera image and pointcloud overlay    #
@@ -35,15 +35,18 @@ def create_point_cloud_image_overlay(pcd_points2 , cam_image):
                                                 
     RotMat_luminar_front2_flc = np.array([(params.rotation[0]), 
                                             (params.rotation[1]), 
-                                            (params.rotation[2])])
+                                            (params.rotation[2]),
+                                            (params.rotation[3])])
     translation_luminar_front2_flc2 = np.array([(params.usr_translation[0]),
                                                 (params.usr_translation[1]), 
                                                 (params.usr_translation[2])])
     RotMat_luminar_front2_flc2= np.array([params.usr_rotation[0], 
                                             params.usr_rotation[1], 
                                             params.usr_rotation[2]])
-    RotMat_luminar_front2_flc = np.array(transformations.deg2RotMat(RotMat_luminar_front2_flc))
+    # RotMat_luminar_front2_flc = np.array(transformations.deg2RotMat(RotMat_luminar_front2_flc))
     RotMat_luminar_front2_flc2 = np.array(transformations.deg2RotMat(RotMat_luminar_front2_flc2))
+    RotMat_luminar_front2_flc = R.from_quat(RotMat_luminar_front2_flc).as_matrix()
+    # RotMat_luminar_front2_flc2 = R.from_quat(RotMat_luminar_front2_flc2).as_matrix()
 
     translation_luminar_front2_flc = translation_luminar_front2_flc + translation_luminar_front2_flc2 
     translation_luminar_front2_flc_final = translation_luminar_front2_flc
@@ -61,9 +64,9 @@ def create_point_cloud_image_overlay(pcd_points2 , cam_image):
     #                     Writing the Calibrations into a file                     #
     # ---------------------------------------------------------------------------- #
     # Save the array to a file
-    np.savetxt('Calibrated_translation.txt', translation_luminar_front2_flc_final, fmt='%.4f')
+    np.savetxt(f'calibration/Calibrated_translation_{params.cam_type}.txt', translation_luminar_front2_flc2, fmt='%.4f')
     # Save the array to a file
-    np.savetxt('Calibrated_rotation.txt', RotMat_luminar_front2_flc, fmt='%.4f')
+    np.savetxt(f'calibration/Calibrated_rotation_{params.cam_type}.txt', RotMat_luminar_front2_flc2, fmt='%.4f')
     # with open('calibtaton.txt','wb') as f:
     #     new_translation = str(translation_luminar_front2_flc_final) + '\n'
     #     new_rotation = str(RotMat_luminar_front2_flc)
@@ -74,9 +77,10 @@ def create_point_cloud_image_overlay(pcd_points2 , cam_image):
     ptc_xyz_camera = ptc_xyz_camera.T
 
     # ------------------------- Applying the Camera Info ------------------------- #
-    camera_info = np.array([[1732.571708*0.5 * float(params.fx), 0.000000, 549.797164*0.5 + params.usr_cx_scale], 
-                            [0.000000, 1731.274561*0.5 * float(params.fx), 295.484988*0.5 + params.usr_cy_scale], 
-                            [0.000000, 0.000000, 1.000000]])
+    # camera_info = np.array([[1732.571708*0.5 * float(params.fx), 0.000000, 549.797164*0.5 + params.usr_cx_scale], 
+    #                         [0.000000, 1731.274561*0.5 * float(params.fx), 295.484988*0.5 + params.usr_cy_scale], 
+    #                         [0.000000, 0.000000, 1.000000]])
+    camera_info=params.mp
     # camera_info = np.array([[1732.571708 * float(params.fx), 0.000000, 549.797164 + params.usr_cx_scale], 
     #                     [0.000000, 1731.274561 * float(params.fx), 295.484988 + params.usr_cy_scale], 
     #                     [0.000000, 0.000000, 1.000000]])

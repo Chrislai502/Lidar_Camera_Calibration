@@ -1,9 +1,20 @@
 import numpy as np
-import open3d as o3d
+# import open3d as o3d
 # from cv2 import cv2 as cv
 import cv2 as cv
 import matplotlib.image as mpimg
+import yaml
+import os
+from scipy.spatial.transform import Rotation as R
 
+
+# cam_type='front_left_center'
+cam_type='front_left'
+# lidar_frame = 'luminar_front'
+# lidar_frame = 'vimba_front_left_center'
+# camera_frame = 'vimba_front_left_center'
+# camera_frame = 'luminar_front'
+cam=yaml.safe_load(open(f'/home/autera-admin/Desktop/Calibration_30Dec22/{cam_type}/ost.yaml'))
 # ---------------------------------------------------------------------------- #
 #                   Camera parameters / projection parameters                  #
 # ---------------------------------------------------------------------------- #
@@ -22,7 +33,7 @@ sub_topic_pcd = '/luminar_front_points'
 
 # Name of the topic the overlay node gets its image files from
 # sub_topic_image = 'front'
-sub_topic_image = '/vimba_front_left_center/image'
+sub_topic_image = f'/vimba_{cam_type}/image'
 
 # Name of the topic under which the overlay image is published --> this topic must be received by RVIZ
 pub_topic_overlay = 'front_PCD_overlay'
@@ -38,13 +49,22 @@ if sim_data == "yes":
     rotation = (0,0,0) # The order the rotation is done is z,y',x'' ()
 elif sim_data == "no": # If the real camera and LiDAR data is used the initial translations are different
     # translation = (-0.71224, 0, 0.06637) # according to TUM wiki
-    translation = (0.121, -0.026, 0.007) # Chirs Changed this
-    rotation = (90,-90,0) # The order the rotation is done is z,y',x'' (In degrees)(use this website to figure out what it is using Euler angles https://www.andre-gaschler.com/rotationconverter/)
+    # translation = (0.121, -0.026, 0.007) # front_left_center
+    # translation = (-0.121, -0.026, 0.007) # front_right_center
+    translation = (0.146, -0.026, -0.107) # front_left
+    # rotation = (90,-90,0) # Front_left_center
+    # rotation = (0.496, -0.496, 0.504, 0.504) # Front_right_center
+    rotation = (0.672, -0.207, 0.219, 0.676) # Front_left
     # rotation = (0,0,0) # The order the rotation is done is z,y',x'' (In degrees)(use this website to figure out what it is using Euler angles https://www.andre-gaschler.com/rotationconverter/)
 
 # Default user input transformation / rotation --> don't change
-usr_translation = (0,0,0) 
-usr_rotation = (0,0,0)
+if not os.path.exists(f'calibration/Calibrated_translation_{cam_type}.txt'):
+    usr_translation = (0,0,0) 
+    usr_rotation = (0,0,0)
+else:
+    usr_translation=np.loadtxt(f'calibration/Calibrated_translation_{cam_type}.txt')
+    usr_rotation=R.from_matrix(np.loadtxt(f'calibration/Calibrated_rotation_{cam_type}.txt')).as_euler('xyz', degrees=True)
+    print(usr_translation,usr_rotation)
 
 ### Front camera FOV / Simaltaion FOV
 # horizontal_FOV_cam = 25 # Total FOV in degrees
@@ -90,9 +110,10 @@ if sim_data == "yes":
 
 else:
     # Camera matrix (not needed for FTM simulation data)
-    mp =np.array ([[focal_length, 0, width_pixels/2],
-                [0, focal_length, height_pixels/2],
-                [0,0,1]])
+    # mp =np.array ([[focal_length, 0, width_pixels/2],
+    #             [0, focal_length, height_pixels/2],
+    #             [0,0,1]])
+    mp = np.array(cam['camera_matrix']['data']).reshape((3,3))
 
 
 # ---------------------------------------------------------------------------- #
@@ -117,10 +138,10 @@ pcd_dis_min = 1 # Meters
 
 # Slider parameters
 # Max / min slider value
-max_trans = 1 # meters
-min_trans = -1 # meters
-max_deg = 2 # degrees
-min_deg = -2 # degrees
+max_trans = 5 # meters
+min_trans = -5 # meters
+max_deg = 8 # degrees
+min_deg = -8 # degrees
 
 resolution_trans = 0.001 # Defines the steprange of the translation sliders in meters
 resolution_rot = 0.01 # Defines the steprange of the rotation slider in degrees

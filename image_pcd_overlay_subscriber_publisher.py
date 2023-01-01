@@ -10,12 +10,20 @@ import rclpy
 from rclpy.clock import ROSClock
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
-import open3d as o3d
+# import open3d as o3d
 import numpy as np
 # Own files
 import params 
 from pcd_image_overlay_Chris import create_point_cloud_image_overlay
 import pointcloud2_to_pcd_file  
+
+# from tf2_ros import TransformException
+# from tf2_ros.buffer import Buffer
+# from tf2_ros.transform_listener import TransformListener
+
+# import time
+
+from scipy.spatial.transform import Rotation as R
 
 # ---------------------------------------------------------------------------- #
 # -------------- Subscribes to the image and ptc, then publishes ------------- #
@@ -73,8 +81,60 @@ class Img_PCD_Subscriber_Overlay_Publisher(Node):
         # Declaring CV bridge for converting ROS sensor Images to OpenCV Images
         self.bridge = CvBridge()
 
+        # # subscribe to lookup transform and have initial transform written
+        # # to params.py
+
+        # self.tf_buffer = Buffer()
+        # self.tf_listener = TransformListener(self.tf_buffer, self)
+
+        # from_frame_rel = params.lidar_frame # From
+        # to_frame_rel = params.camera_frame # To
+
+
+        # print("Sleeping...")
+        # # Sleep the code to wait for the transforms to be ready
+        # time.sleep(3)
+        # print("Awake!...")
+
+        # got_transform = False
+        # while not got_transform:
+        #     print(self.tf_buffer)
+        #     try:
+        #         t = self.tf_buffer.lookup_transform(
+        #             target_frame = to_frame_rel,
+        #             source_frame = from_frame_rel,
+        #             time = rclpy.time.Time())
+        #         got_transform = True
+        #         print("Got the Transform!")
+        #     except TransformException as ex:
+        #         self.get_logger().info(
+        #             f'Could not transform {to_frame_rel} to {from_frame_rel}: {ex}')
+        #         print("No transform was found")
+        #         # return
+        #     time.sleep(0.5)
+        
+        # print("Transforms Start here: \n", t)
+        # print("Transforms End")
+        
+
+        # x = t.transform.translation.x
+        # y = t.transform.translation.y
+        # z = t.transform.translation.z
+        # params.translation = (x, y, z)
+
+        # x = t.transform.rotation.x
+        # y = t.transform.rotation.y
+        # z = t.transform.rotation.z
+        # w = t.transform.rotation.w
+        # r = R.from_quat([x, y, z, w])
+        # r_ = r.as_euler('zyx', degrees=True)
+        # params.rotation = (r[0], r[1], r[2])
+
+
+
     # -------------------- Image subscriber callback function -------------------- #
     def sub_callback_img(self, Image):
+        print("i")
         Img_PCD_Subscriber_Overlay_Publisher.glob_cv_image_front = None # Clears out the buffer first
         try: 
             Img_PCD_Subscriber_Overlay_Publisher.glob_cv_image_front  = self.bridge.imgmsg_to_cv2(Image)
@@ -84,6 +144,7 @@ class Img_PCD_Subscriber_Overlay_Publisher(Node):
 
     # --------------- Pointcloud2 file subscriber callback function -------------- #
     def sub_callback_pcd(self, PointCloud2 ):
+        print("p")
         # The 'msg', which is of the type PointCloud2 is converted to a pcd and finally to an array.
         # The function read_points2 is ported from the ROS1 package below. 
         # https://github.com/ros/common_msgs/blob/noetic-devel/sensor_msgs/src/sensor_msgs/point_cloud2.py

@@ -1,5 +1,4 @@
 import numpy as np
-import open3d as o3d
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import matplotlib.cm as cm
