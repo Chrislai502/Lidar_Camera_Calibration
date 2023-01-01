@@ -94,9 +94,12 @@ def create_point_cloud_image_overlay(pcd_points2 , cam_image):
 
     # -------------------- Plotting everything into the Image -------------------- #
     # print("image_width, height:", image.shape)
-    image_undistorted = cv2.undistort(cam_image, camera_info, np.array([-0.272455, 0.268395, -0.005054, 0.000391, 0.000000]))
+    # image_undistorted = cv2.undistort(cam_image, camera_info, np.array([-0.272455, 0.268395, -0.005054, 0.000391, 0.000000]))
+    # image_undistorted = cv2.undistort(cam_image, camera_info, np.array([-0.283216, 0.897644, 0.016245, -0.453700]))
+    # cv2.
     border_size=300
-    image_undistorted=cv2.copyMakeBorder(image_undistorted,border_size,border_size,border_size,border_size,cv2.BORDER_CONSTANT,None,0)
+    # image_undistorted=cv2.copyMakeBorder(image_undistorted,border_size,border_size,border_size,border_size,cv2.BORDER_CONSTANT,None,0)
+    image_undistorted=cv2.copyMakeBorder(cam_image,border_size,border_size,border_size,border_size,cv2.BORDER_CONSTANT,None,0)
     
     
     z_min=np.min(ptc_z_camera)
