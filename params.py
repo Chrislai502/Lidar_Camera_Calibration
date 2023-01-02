@@ -9,11 +9,13 @@ from scipy.spatial.transform import Rotation as R
 
 
 # cam_type='front_left_center'
-cam_type='front_left'
+cam_type='front_right'
+# cam_type='rear_left'
 # lidar_frame = 'luminar_front'
 # lidar_frame = 'vimba_front_left_center'
 # camera_frame = 'vimba_front_left_center'
-# camera_frame = 'luminar_front'
+# lifar_frame = 'luminar_front'
+lifar_frame = 'luminar_front'
 cam=yaml.safe_load(open(f'/home/autera-admin/Desktop/Calibration_30Dec22/{cam_type}/ost.yaml'))
 # ---------------------------------------------------------------------------- #
 #                   Camera parameters / projection parameters                  #
@@ -29,7 +31,7 @@ sim_data = "no"
 
 # Name of the topic the overlay node gets its pcd files from
 # sub_topic_pcd = 'velodyne_points'
-sub_topic_pcd = '/luminar_front_points'
+sub_topic_pcd = f'/{lifar_frame}_points'
 
 # Name of the topic the overlay node gets its image files from
 # sub_topic_image = 'front'
@@ -45,16 +47,22 @@ pub_topic_overlay = 'front_PCD_overlay'
 # Enter the negative vector from LiDAR to camera
 if sim_data == "yes":
     # translation = (-0.0743899, 0, -0.0633099)   # Luminar dataset
-    translation = (-0.1069789, 0, -0.0470642)   # Dataset 1x1x1 meter dice in FOV   
+    # translation = (-0.1069789, 0, -0.0470642)   # Dataset 1x1x1 meter dice in FOV   
     rotation = (0,0,0) # The order the rotation is done is z,y',x'' ()
 elif sim_data == "no": # If the real camera and LiDAR data is used the initial translations are different
     # translation = (-0.71224, 0, 0.06637) # according to TUM wiki
     # translation = (0.121, -0.026, 0.007) # front_left_center
     # translation = (-0.121, -0.026, 0.007) # front_right_center
-    translation = (0.146, -0.026, -0.107) # front_left
+    # translation = (0.146, -0.026, -0.107) # front_left
+    translation = (-0.072, 0.129, 0.000) # rear_left
+    translation = (0.140, -0.000, 0.048) # rear_left
+
     # rotation = (90,-90,0) # Front_left_center
     # rotation = (0.496, -0.496, 0.504, 0.504) # Front_right_center
-    rotation = (0.672, -0.207, 0.219, 0.676) # Front_left
+    # rotation = (0.672, -0.207, 0.219, 0.676) # Front_left
+    rotation = (-0.542, 0.455, -0.455, 0.542) # Rear_left
+    rotation = (0.542, -0.455, 0.455, 0.542) # Rear_left
+
     # rotation = (0,0,0) # The order the rotation is done is z,y',x'' (In degrees)(use this website to figure out what it is using Euler angles https://www.andre-gaschler.com/rotationconverter/)
 
 # Default user input transformation / rotation --> don't change
@@ -114,7 +122,9 @@ else:
     #             [0, focal_length, height_pixels/2],
     #             [0,0,1]])
     mp = np.array(cam['camera_matrix']['data']).reshape((3,3))
-
+    distortion = np.array(cam['distortion_coefficients']['data'])
+    distortion_model = cam['distortion_model']
+    dimensions = (cam['image_width'], cam['image_height'])
 
 # ---------------------------------------------------------------------------- #
 #                       Quality of publishing Parameters                       #
@@ -147,23 +157,7 @@ resolution_trans = 0.001 # Defines the steprange of the translation sliders in m
 resolution_rot = 0.01 # Defines the steprange of the rotation slider in degrees
 
 width_slider = 1500 # Defines the width of the GUI window in pixels
+alpha = 1.0
+max_a = 1.0
+min_a = 0.0
 
-# ---------------------------------------------------------------------------- #
-#                            Chris adds more params                            #
-# ---------------------------------------------------------------------------- #
-
-# ---------------------------------- Z_scale --------------------------------- #
-usr_z_scale = 0
-max_z_scale = 3 
-min_z_scale = -0.9
-resolution_z_scale = 0.01
-# ------------------------------------ cx ------------------------------------ #
-max_px = 1500 # pixels
-min_px = -1500 # pixels
-resolution_px = 1.0
-usr_cx_scale = 0
-usr_cy_scale = 0
-maxx=2
-minx=0.1
-fx=1
-# ------------------------------------ cy ------------------------------------ #

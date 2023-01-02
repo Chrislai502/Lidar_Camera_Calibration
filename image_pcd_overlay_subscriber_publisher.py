@@ -138,6 +138,7 @@ class Img_PCD_Subscriber_Overlay_Publisher(Node):
         Img_PCD_Subscriber_Overlay_Publisher.glob_cv_image_front = None # Clears out the buffer first
         try: 
             Img_PCD_Subscriber_Overlay_Publisher.glob_cv_image_front  = self.bridge.imgmsg_to_cv2(Image)
+            
         except CvBridgeError as e:
             print(e)
         # print("Subscribed to image.") 

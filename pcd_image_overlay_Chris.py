@@ -97,10 +97,19 @@ def create_point_cloud_image_overlay(pcd_points2 , cam_image):
     # image_undistorted = cv2.undistort(cam_image, camera_info, np.array([-0.272455, 0.268395, -0.005054, 0.000391, 0.000000]))
     # image_undistorted = cv2.undistort(cam_image, camera_info, np.array([-0.283216, 0.897644, 0.016245, -0.453700]))
     # cv2.
-    border_size=300
+    border_size=0
+    
+    print('params.distortion_model: ', params.distortion_model)
+    print('params.dimensions: ', params.dimensions)
+    print('params.distortion: ', params.distortion)
+    if params.distortion_model == 'fisheye':
+        map1, map2 = cv2.fisheye.initUndistortRectifyMap(params.mp, params.distortion, np.eye(3), params.mp, params.dimensions, cv2.CV_16SC2)
+        image_undistorted = cv2.remap(cam_image, map1, map2, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
+    else:
+        image_undistorted = cv2.undistort(cam_image, camera_info, np.array(params.distortion))
     # image_undistorted=cv2.copyMakeBorder(image_undistorted,border_size,border_size,border_size,border_size,cv2.BORDER_CONSTANT,None,0)
     image_undistorted=cv2.copyMakeBorder(cam_image,border_size,border_size,border_size,border_size,cv2.BORDER_CONSTANT,None,0)
-    
+        
     
     z_min=np.min(ptc_z_camera)
     z_range=np.max(ptc_z_camera)-z_min
@@ -115,7 +124,10 @@ def create_point_cloud_image_overlay(pcd_points2 , cam_image):
         b = int(np.floor(i[1]) + border_size)
         if a>0 and b>0:
             try:
-                image_undistorted[b-1:b+2,a-1:a+2] = c
+                # image_undistorted[b-1:b+2,a-1:a+2] = c
+                temp = image_undistorted[b,a]
+                alp = 0.5
+                image_undistorted[b,a] = c*alp + temp * (1-alp)
             except:
                 continue
 

@@ -18,11 +18,11 @@ def create_slider():
     def show_overlay_rot_z(value):
         params.usr_rotation = (w4.get(), w5.get(), float(value))
     def show_overlay_cx(value):
-        params.usr_cx_scale = int(value)
-    def show_overlay_cy(value):
-        params.usr_cy_scale = int(value)
-    def show_overlay_fx(value):
-        params.fx = value
+        params.alpha = value
+    # def show_overlay_cy(value):
+    #     params.usr_cy_scale = int(value)
+    # def show_overlay_fx(value):
+    #     params.fx = value
     
 
     def show_overlay():
@@ -52,7 +52,8 @@ def create_slider():
         txt.write(str(matrix[0]))
         txt.write("\n")
         txt.write(str(matrix[1]))
-        txt.write("\n")
+        txt.write("\n")    # def show_overlay_cx(value):
+    #     params.usr_cx_scale = int(value)
         txt.write(str(matrix[2]))
         txt.write("\n")
         txt.write("\n")
@@ -103,23 +104,23 @@ def create_slider():
     w6.set(params.usr_rotation[2])
     w6.pack()
 
-    # ---------------------------------------------------------------------------- #
-    #                          Chris Additional Parameters                         #
-    # ---------------------------------------------------------------------------- #
-    w7 = tk.Scale(master, label = "Scaling on cx:", from_ = params.min_px, to = params.max_px, \
-    length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_px, command=show_overlay_cx)
-    w7.set(params.usr_cx_scale)
+    # # ---------------------------------------------------------------------------- #
+    # #                          Chris Additional Parameters                         #
+    # # ---------------------------------------------------------------------------- #
+    w7 = tk.Scale(master, label = "Alpha:", from_ = params.min_a, to = params.max_a, \
+    length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot, command=show_overlay_cx)
+    w7.set(params.alpha)
     w7.pack()
 
-    w8 = tk.Scale(master, label = "Scaling on cy:", from_ = params.min_px, to = params.max_px, \
-    length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_px, command=show_overlay_cy)
-    w8.set(params.usr_cy_scale)
-    w8.pack()
+    # w8 = tk.Scale(master, label = "Scaling on cy:", from_ = params.min_px, to = params.max_px, \
+    # length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_px, command=show_overlay_cy)
+    # w8.set(params.usr_cy_scale)
+    # w8.pack()
 
-    w9 = tk.Scale(master, label = "Scaling on Fx:", from_ = params.minx, to = params.maxx, \
-    length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot, command=show_overlay_fx)
-    w9.set(params.fx)
-    w9.pack()
+    # w9 = tk.Scale(master, label = "Scaling on Fx:", from_ = params.minx, to = params.maxx, \
+    # length = params.width_slider, orient = tk.HORIZONTAL, resolution = params.resolution_rot, command=show_overlay_fx)
+    # w9.set(params.fx)
+    # w9.pack()
 
     # Definition of buttons
     tk.Button(master, text = '          Show Overlay          ', command = show_overlay).pack()

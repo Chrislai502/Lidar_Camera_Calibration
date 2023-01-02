@@ -1,0 +1,47 @@
+ros2 run tf2_ros tf2_echo vimba_rear_left luminar_left
+[INFO] [1672616190.580780108] [tf2_echo]: Waiting for transform vimba_rear_left ->  luminar_left: Invalid frame ID "vimba_rear_left" passed to canTransform argument target_frame - frame does not exist
+At time 0.0
+- Translation: [0.140, -0.000, 0.048]
+- Rotation: in Quaternion [0.542, -0.455, 0.455, 0.542]
+
+ros2 run tf2_ros tf2_echo vimba_front_left luminar_left
+[INFO] [1672615645.296122853] [tf2_echo]: Waiting for transform vimba_front_left ->  luminar_left: Invalid frame ID "vimba_front_left" passed to canTransform argument target_frame - frame does not exist
+At time 0.0
+- Translation: [-0.575, -0.121, -0.286]
+- Rotation: in Quaternion [-0.153, 0.690, -0.690, -0.153]
+
+ros2 run tf2_ros tf2_echo vimba_front_left luminar_front
+[INFO] [1672615937.806441894] [tf2_echo]: Waiting for transform vimba_front_left ->  luminar_front: Invalid frame ID "vimba_front_left" passed to canTransform argument target_frame - frame does not exist
+At time 0.0
+- Translation: [0.146, -0.026, -0.107]
+- Rotation: in Quaternion [0.672, -0.207, 0.219, 0.676]
+
+ros2 run tf2_ros tf2_echo vimba_front_left_center luminar_front
+[INFO] [1672615963.482779238] [tf2_echo]: Waiting for transform vimba_front_left_center ->  luminar_front: Invalid frame ID "vimba_front_left_center" passed to canTransform argument target_frame - frame does not exist
+At time 0.0
+- Translation: [0.121, -0.026, 0.007]
+- Rotation: in Quaternion [0.496, -0.496, 0.504, 0.504]
+
+ros2 run tf2_ros tf2_echo vimba_front_right_center luminar_front
+[INFO] [1672615979.754270579] [tf2_echo]: Waiting for transform vimba_front_right_center ->  luminar_front: Invalid frame ID "vimba_front_right_center" passed to canTransform argument target_frame - frame does not exist
+At time 0.0
+- Translation: [-0.121, -0.026, 0.007]
+- Rotation: in Quaternion [0.496, -0.496, 0.504, 0.504]
+
+ros2 run tf2_ros tf2_echo vimba_front_right luminar_front
+[INFO] [1672616024.754618009] [tf2_echo]: Waiting for transform vimba_front_right ->  luminar_front: Invalid frame ID "vimba_front_right" passed to canTransform argument target_frame - frame does not exist
+At time 0.0
+- Translation: [-0.146, -0.026, -0.107]
+- Rotation: in Quaternion [0.207, -0.673, 0.676, 0.219]
+
+ros2 run tf2_ros tf2_echo vimba_front_right luminar_right
+[INFO] [1672616061.774687486] [tf2_echo]: Waiting for transform vimba_front_right ->  luminar_right: Invalid frame ID "vimba_front_right" passed to canTransform argument target_frame - frame does not exist
+At time 0.0
+- Translation: [0.575, -0.121, -0.286]
+- Rotation: in Quaternion [0.689, -0.160, 0.146, 0.692]
+
+ros2 run tf2_ros tf2_echo vimba_rear_right luminar_right
+[INFO] [1672616085.365745491] [tf2_echo]: Waiting for transform vimba_rear_right ->  luminar_right: Invalid frame ID "vimba_rear_right" passed to canTransform argument target_frame - frame does not exist
+At time 0.0
+- Translation: [-0.140, -0.000, 0.048]
+- Rotation: in Quaternion [-0.457, 0.548, -0.535, -0.452]
