@@ -8,15 +8,17 @@ import os
 from scipy.spatial.transform import Rotation as R
 
 
-# cam_type='front_left_center'
-cam_type='front_right'
+cam_type='front_right_center'
+# cam_type='front_right'
 # cam_type='rear_left'
 # lidar_frame = 'luminar_front'
 # lidar_frame = 'vimba_front_left_center'
 # camera_frame = 'vimba_front_left_center'
 # lifar_frame = 'luminar_front'
 lifar_frame = 'luminar_front'
-cam=yaml.safe_load(open(f'/home/autera-admin/Desktop/Calibration_30Dec22/{cam_type}/ost.yaml'))
+# cam=yaml.safe_load(open(f'/home/autera-admin/Desktop/Calibration_30Dec22/{cam_type}/ost.yaml'))
+cam=yaml.safe_load(open(f'/home/roar/race_common/src/launch/iac_launch/param/cameras_param/cam_{cam_type}_calib.yaml'))
+
 # ---------------------------------------------------------------------------- #
 #                   Camera parameters / projection parameters                  #
 # ---------------------------------------------------------------------------- #
